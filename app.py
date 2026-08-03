@@ -6,7 +6,7 @@ import streamlit as st
 
 DATA_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "news_log.csv")
 
-st.set_page_config(page_title="엔터·미디어 회계 인사이트 레이더", page_icon="🎬", layout="wide")
+st.set_page_config(page_title="엔터·미디어 회계이슈 기사 스크랩", page_icon="🎬", layout="wide")
 
 st.markdown(
     """
@@ -63,13 +63,13 @@ def load_data():
 
 df = load_data()
 
-st.title("🎬 엔터·미디어 회계 인사이트 레이더")
+st.title("🎬 엔터·미디어 회계이슈 기사 스크랩")
 st.markdown(
-    '<p class="app-tagline">엔터·미디어 산업에서 감사 실무상 판단이 걸리는 5가지 주제(콘텐츠 자산화·상각 / '
-    "수익인식 / 우발부채·소송 / 지배구조·합병 / 정책·지원제도)의 뉴스를 매주 일요일 자동 수집해 누적하는 "
-    "개인 인사이트 관리용 대시보드임. 같은 사건의 중복 보도는 주요언론사·최신순 기준으로 묶어 정리하고, "
-    "회계 이슈와 무관한 가십성 기사는 제외함. 산업 신호를 놓치지 않기 위한 "
-    '트렌드 추적용임.</p>',
+    '<p class="app-tagline">엔터·미디어 산업에서 회계·감사 측면의 주된 이슈가 될 수 있는 5가지 주제'
+    "(콘텐츠 자산화·상각 / 수익인식 / 우발부채·소송 / 지배구조·합병 / 정책·지원제도)의 뉴스를 매주 "
+    "일요일 자동 수집해 누적하는 개인 인사이트 관리용 대시보드임. 같은 사건의 중복 보도는 주요언론사·"
+    "최신순 기준으로 묶어 정리하고, 회계 이슈와 무관한 가십성 기사는 제외함. 산업 신호를 놓치지 않기 "
+    '위한 트렌드 추적용</p>',
     unsafe_allow_html=True,
 )
 
