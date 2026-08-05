@@ -1,3 +1,12 @@
-streamlit
+# starlette 상한을 두는 이유
+#   starlette 1.4.0(2026-08)에서 GZip 압축을 스레드로 넘기며 GZipResponder에
+#   thread_minimum_size 인자가 추가되었는데, streamlit은 아직 옛 시그니처로 호출함.
+#   streamlit이 선언한 범위(starlette<2)가 느슨해 최신 버전이 설치되면
+#   기동 단계에서 TypeError가 나며 앱이 죽음.
+#
+# pandas/plotly는 고정하지 않음
+#   배포 환경이 Python 3.14라 구버전은 wheel이 없어 소스 빌드로 넘어감.
+streamlit==1.61.0
+starlette<1.4
 pandas
 plotly
