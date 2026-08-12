@@ -109,6 +109,7 @@ MAJOR_OUTLET_DOMAINS = [
 ]
 
 DUP_TOKEN_JACCARD_THRESHOLD = 0.5  # 제목 핵심단어 중복비율 — 통신사 재배포 기사 탐지용
+NEAR_DUPLICATE_THRESHOLD = 0.9  # 이 이상이면 "사실상 동일 기사"로 보고 1건만 남김
 KEEP_PER_CLUSTER = 3
 MAX_PER_KEYWORD = 8  # 이슈가 아무리 커도 키워드당 최종 상한
 
@@ -185,7 +186,16 @@ def cluster_and_trim(items, keep=KEEP_PER_CLUSTER, threshold=DUP_TOKEN_JACCARD_T
     trimmed = []
     for cluster in clusters:
         cluster.sort(key=lambda x: (is_major_outlet(x["originallink"]), -parse_pub_date(x["pubDate"]).timestamp()))
-        trimmed.extend(cluster[:keep])
+        # 같은 "사건" 묶음이어도, 사실상 동일한 기사(재배포 수준으로 제목이 거의 똑같음)까지
+        # keep 건수만큼 채워 보여주는 건 과하므로, 이미 채택한 기사와 거의 동일한 제목이면 건너뛴다.
+        kept = []
+        for candidate in cluster:
+            if len(kept) >= keep:
+                break
+            if any(title_similarity(candidate["title"], k["title"]) >= NEAR_DUPLICATE_THRESHOLD for k in kept):
+                continue
+            kept.append(candidate)
+        trimmed.extend(kept)
 
     trimmed.sort(key=lambda x: (is_major_outlet(x["originallink"]), -parse_pub_date(x["pubDate"]).timestamp()))
     return trimmed[:max_total]
